@@ -31,6 +31,7 @@
 .pub-cache/
 .pub/
 /build/
+.last_build_id
 
 # Web related
 lib/generated_plugin_registrant.dart
