@@ -1,4 +1,0 @@
-#Mon Aug 10 19:43:09 BST 2020
-base.0=C\:\\Users\\uib15819\\Documents\\myapp\\eat-out-help-out\\eat_out_help_out\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
