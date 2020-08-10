@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'src/locations.dart' as locations;
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -9,17 +12,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  GoogleMapController mapController;
-
-  final LatLng _center = const LatLng(50.8442448, -0.1440247);
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+  final Map<String, Marker> _markers = {};
+  Future<void> _onMapCreated(GoogleMapController controller) async {
+    final googleOffices = await locations.getGoogleOffices();
+    setState(() {
+      _markers.clear();
+      for (1) {
+        final marker = Marker(
+          markerId: MarkerId(results.name),
+          position: LatLng(results.lat, results.lng),
+          infoWindow: InfoWindow(
+            title: results.name,
+            snippet: results.address,
+          ),
+        );
+        _markers[results.name] = marker;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text('eat out help out'),
@@ -28,9 +43,10 @@ class _MyAppState extends State<MyApp> {
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
-            target: _center,
+            target: const LatLng(0, 0),
             zoom: 11.0,
           ),
+          markers: _markers.values.toSet(),
         ),
       ),
     );
