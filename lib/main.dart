@@ -30,7 +30,8 @@ class _MyAppState extends State<MyApp> {
       _markers.clear();
       for (final result in data['results']) {
         final marker = Marker(
-          markerId: MarkerId(result['name']),
+          markerId:
+              MarkerId("${result['name']}-${result['lat']}-${result['lng']}"),
           position: LatLng(result['lat'], result['lng']),
           infoWindow: InfoWindow(
             title: result['name'],
