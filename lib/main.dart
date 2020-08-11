@@ -14,6 +14,33 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+String formatAddress(String name, dynamic addressJson) {
+  var output = '';
+  if (addressJson['line1'] != name) {
+    output += addressJson['line1'];
+    output += '\n';
+  }
+  if (addressJson['line2'] != null) {
+    output += addressJson['line2'];
+    output += '\n';
+  }
+  var extraParts = [];
+  if (addressJson['town'] != null) {
+    extraParts.add(addressJson['town']);
+  }
+  if (addressJson['county'] != null) {
+    extraParts.add(addressJson['county']);
+  }
+  if (extraParts.isNotEmpty) {
+    output += extraParts.join(', ');
+    output += '\n';
+  }
+  if (addressJson['postcode'] != null) {
+    output += addressJson['postcode'];
+  }
+  return output;
+}
+
 class _MyAppState extends State<MyApp> {
   final Map<String, Marker> _markers = {};
   GoogleMapController _controller;
@@ -52,8 +79,7 @@ class _MyAppState extends State<MyApp> {
           position: LatLng(result['lat'], result['lng']),
           infoWindow: InfoWindow(
             title: result['name'],
-            snippet:
-                'address goes here', // todo: format address as a string: result['address'],
+            snippet: formatAddress(result['name'], result['address']),
           ),
         );
         _markers[result['name']] = marker;
