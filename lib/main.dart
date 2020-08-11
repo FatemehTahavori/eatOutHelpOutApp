@@ -18,7 +18,9 @@ class _MyAppState extends State<MyApp> {
   final Map<String, Marker> _markers = {};
   GoogleMapController _controller;
   Position myPosition;
-  void initSate() {
+
+  @override
+  void initState() {
     getCurrentLocation();
     super.initState();
   }
@@ -65,6 +67,20 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final map = myPosition == null
+        ? null
+        : GoogleMap(
+            onMapCreated: _onMapCreatedOrChanged,
+            onCameraMove: _onMapCreatedOrChangedDebounced,
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
+            initialCameraPosition: CameraPosition(
+              target:
+                  LatLng(myPosition.latitude ?? 0, myPosition.longitude ?? 0),
+              zoom: 11.0,
+            ),
+            markers: _markers.values.toSet(),
+          );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -72,17 +88,7 @@ class _MyAppState extends State<MyApp> {
           title: Text('eat out help out'),
           backgroundColor: Colors.blue[700],
         ),
-        body: GoogleMap(
-          onMapCreated: _onMapCreatedOrChanged,
-          onCameraMove: _onMapCreatedOrChangedDebounced,
-          myLocationEnabled: true,
-          myLocationButtonEnabled: true,
-          initialCameraPosition: CameraPosition(
-            target: LatLng(myPosition.latitude ?? 0, myPosition.longitude ?? 0),
-            zoom: 11.0,
-          ),
-          markers: _markers.values.toSet(),
-        ),
+        body: map,
       ),
     );
   }
