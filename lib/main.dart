@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as json;
@@ -16,8 +17,22 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final Map<String, Marker> _markers = {};
   GoogleMapController _controller;
+  Position myPosition;
+  void initSate() {
+    getCurrentLocation();
+    super.initState();
+  }
+
+  void getCurrentLocation() async {
+    var res = await Geolocator().getCurrentPosition();
+    setState(() {
+      myPosition = res;
+    });
+  }
+
   Future<void> _onMapCreatedOrChanged(GoogleMapController controller) async {
     _controller = controller;
+
     final visibleRegion = await controller.getVisibleRegion();
     final lat1 = visibleRegion.southwest.latitude;
     final lng1 = visibleRegion.southwest.longitude;
@@ -60,8 +75,10 @@ class _MyAppState extends State<MyApp> {
         body: GoogleMap(
           onMapCreated: _onMapCreatedOrChanged,
           onCameraMove: _onMapCreatedOrChangedDebounced,
+          myLocationEnabled: true,
+          myLocationButtonEnabled: true,
           initialCameraPosition: CameraPosition(
-            target: const LatLng(0, 0),
+            target: LatLng(myPosition.latitude ?? 0, myPosition.longitude ?? 0),
             zoom: 11.0,
           ),
           markers: _markers.values.toSet(),
