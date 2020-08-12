@@ -111,7 +111,10 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text('eat out help out'),
+          title: Center(
+              child: Text('Eat Out Help Out \n Monday, Tuesday, Wednesday',
+                  style: TextStyle(fontSize: 17), textAlign: TextAlign.center)),
+          //Text('Textevery Monday, Tuesday and Wednesday'),
           backgroundColor: Colors.blue[700],
         ),
         body: map,
