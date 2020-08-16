@@ -112,7 +112,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: Center(
-              child: Text('Eat Out Help Out \n Monday, Tuesday, Wednesday',
+              child: Text('Eat Out to Help Out\n Monday, Tuesday, Wednesday',
                   style: TextStyle(fontSize: 17), textAlign: TextAlign.center)),
           //Text('Textevery Monday, Tuesday and Wednesday'),
           backgroundColor: Colors.blue[700],
