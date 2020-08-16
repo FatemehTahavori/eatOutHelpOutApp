@@ -45,6 +45,7 @@ class _MyAppState extends State<MyApp> {
   final Map<String, Marker> _markers = {};
   GoogleMapController _controller;
   Position myPosition;
+  bool hasLocation = false;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
   void getCurrentLocation() async {
     var res = await Geolocator().getCurrentPosition();
     setState(() {
+      hasLocation = true;
       myPosition = res;
     });
   }
@@ -93,20 +95,22 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final map = myPosition == null
-        ? null
-        : GoogleMap(
+    var target = myPosition != null
+        ? LatLng(myPosition?.latitude ?? 0, myPosition?.longitude ?? 0)
+        : LatLng(0, 0);
+    final map = hasLocation
+        ? GoogleMap(
             onMapCreated: _onMapCreatedOrChanged,
             onCameraMove: _onMapCreatedOrChangedDebounced,
             myLocationEnabled: true,
             myLocationButtonEnabled: true,
             initialCameraPosition: CameraPosition(
-              target:
-                  LatLng(myPosition.latitude ?? 0, myPosition.longitude ?? 0),
+              target: target,
               zoom: 11.0,
             ),
             markers: _markers.values.toSet(),
-          );
+          )
+        : null;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
