@@ -8,8 +8,8 @@
          <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="eat_out_help_out"
-        android:icon="@mipmap/ic_launcher">
+        android:label="Eat Out Help Out"
+        android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyCCyJktbhRbfNdJdhQDY3oVvgdT-shN9no"/>
         <activity
