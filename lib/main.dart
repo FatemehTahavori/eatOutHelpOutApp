@@ -69,7 +69,6 @@ class _MyAppState extends State<MyApp> {
     final lng1 = visibleRegion.southwest.longitude;
     final lat2 = visibleRegion.northeast.latitude;
     final lng2 = visibleRegion.northeast.longitude;
-    print({lat1, lng1, lat2, lng2});
     final request = await http.get(
         'https://eat-out-help-out.herokuapp.com/query?lat1=$lat1&lng1=$lng1&lat2=$lat2&lng2=$lng2');
     final data = json.jsonDecode(request.body);
