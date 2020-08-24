@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as json;
 import 'package:just_debounce_it/just_debounce_it.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -61,6 +62,15 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _launchMapsUrl(address) async {
+    final url = 'https://www.google.com/maps/search/${Uri.encodeFull(address)}';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   Future<void> _onMapCreatedOrChanged(GoogleMapController controller) async {
     _controller = controller;
 
@@ -80,9 +90,12 @@ class _MyAppState extends State<MyApp> {
               MarkerId("${result['name']}-${result['lat']}-${result['lng']}"),
           position: LatLng(result['lat'], result['lng']),
           infoWindow: InfoWindow(
-            title: result['name'],
-            snippet: formatAddress(result['name'], result['address']),
-          ),
+              title: result['name'],
+              snippet: formatAddress(result['name'], result['address']),
+              onTap: () {
+                _launchMapsUrl(
+                    formatAddress(result['name'], result['address']));
+              }),
         );
         _markers[result['name']] = marker;
       }
